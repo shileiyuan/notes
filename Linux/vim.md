@@ -112,7 +112,7 @@
 
 
 
-```
+```bash
 let mapleader=" "	" 将leader键（\键,类似于Windows键）换成空格（相当于空格键）
 
 syntax on	" 开启语法高亮
