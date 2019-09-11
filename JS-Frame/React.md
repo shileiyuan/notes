@@ -107,26 +107,64 @@ setState之后需要做两件事：
 
 
 
-### Hooks
+### Refs and DOM
 
-```javascript
-import React, { useState, useEffect } from 'react';
+```react
+// Adding a Ref to a DOM Element
+class CustomTextInput extends React.Component {
+  constructor(props) {
+    super(props);
+    // create a ref to store the textInput DOM element
+    this.textInput = React.createRef();
+    this.focusTextInput = this.focusTextInput.bind(this);
+  }
 
-export default function App() {
-  const [count, setCount] = useState(0)
-  useEffect(() => {
-    document.title = `You clicked ${count} times`;
-  });
+  focusTextInput() {
+    // Explicitly focus the text input using the raw DOM API
+    // Note: we're accessing "current" to get the DOM node
+    this.textInput.current.focus();
+  }
 
-  return (
-    <div>
-      <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>
-        Click me
-      </button>
-    </div>
-  )
+  render() {
+    // tell React that we want to associate the <input> ref
+    // with the `textInput` that we created in the constructor
+    return (
+      <div>
+        <input
+          type="text"
+          ref={this.textInput} />
+
+        <input
+          type="button"
+          value="Focus the text input"
+          onClick={this.focusTextInput}
+        />
+      </div>
+    );
+  }
 }
+
+// Adding a Ref to a Class Component
+class AutoFocusTextInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.textInput = React.createRef();
+  }
+
+  componentDidMount() {
+    this.textInput.current.focusTextInput();
+  }
+
+  render() {
+    return (
+      <CustomTextInput ref={this.textInput} />
+    );
+  }
+}
+
+// 不能在function组件上使用ref，但是可以在function组件里使用ref，只要ref指向的是DOM元素或者class组件。
+
+// 在父组件中获取子组件的DOM元素
 ```
 
 
